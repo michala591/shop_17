@@ -1,25 +1,33 @@
-import axios from "axios";
-import "./App.css";
-import { useState } from "react";
+import './App.css'
+import { useState } from 'react'
+import Cart from './components/Cart'
+import CartCotext from './CartContext'
+import Jumbotron from './components/Jumbotron'
+import Navbar from './components/Navbar'
+import Container from './components/Container'
+import Footer from './components/Footer'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
-  const [products, setProducts] = useState([])
+  const [cart, setCart] = useState([])
 
-  function getProducts() {
-    axios.get("http://localhost:3006/products").then((response) => {
-      console.log(response.data);
-      setProducts(response.data)
-    });
-  }
   return (
     <>
-      <button onClick={() => getProducts()}>Show Products</button>
-      <div>
-      {products.map(product => <li>{product.name}</li>)}
-      </div>
-
+      <BrowserRouter>
+        <div className='App'>
+          <CartCotext.Provider value={{ cart, setCart }}>
+            <Jumbotron />
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Container />} />
+              <Route path="/cart" element={<Cart />} />
+            </Routes>
+            <Footer />
+          </CartCotext.Provider>
+        </div>
+      </BrowserRouter>
     </>
-  );
+  )
 }
 
-export default App;
+export default App

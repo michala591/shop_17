@@ -1,6 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { Link } from 'react-router-dom'
+import CartCotext from '../CartContext'
 
 function Navbar() {
+    const { cart, setCart } = useContext(CartCotext)
+
     return (
         <div><nav className="navbar navbar-inverse">
             <div className="container-fluid">
@@ -10,19 +14,19 @@ function Navbar() {
                         <span className="icon-bar"></span>
                         <span className="icon-bar"></span>
                     </button>
-                    <a className="navbar-brand" href="#">Logo</a>
                 </div>
                 <div className="collapse navbar-collapse" id="myNavbar">
                     <ul className="nav navbar-nav">
-                        <li className="active"><a href="/">Home</a></li>
-                        <li><a href="#">Products</a></li>
-                        <li><a href="#">Deals</a></li>
-                        <li><a href="#">Stores</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li className="active"><Link to="/">Home</Link></li>
+                        <li className="active"><Link to="/about">About</Link></li>
                     </ul>
                     <ul className="nav navbar-nav navbar-right">
-                        <li><a href="#"><span className="glyphicon glyphicon-user"></span> Your Account</a></li>
-                        <li><a href="/cart"><span className="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+                        <li>
+                            <Link to="/login">
+                                <span class='glyphicon glyphicon-user'></span> Your Account
+                            </Link>
+                        </li>
+                        <li><Link to="/cart"><span className="glyphicon glyphicon-shopping-cart"></span> Cart: {cart.length}</Link></li>
                     </ul>
                 </div>
             </div>

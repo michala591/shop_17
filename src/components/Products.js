@@ -1,26 +1,34 @@
 import axios from 'axios'
 import React, { useContext, useEffect, useState } from 'react'
-import CartCotext from '../CartContext'
+import CartContext from '../CartContext' // Fixed typo
+import { useNavigate } from "react-router-dom";
 
 function Products() {
     const [products, setProducts] = useState([])
-    const { cart, setCart } = useContext(CartCotext)
+    const { cart, setCart } = useContext(CartContext)
+    const navigate = useNavigate()
 
     useEffect(() => {
         getProducts()
     }, [])
 
     function getProducts() {
-        axios.get('http://127.0.0.1:8000/products/').then((response) => {
-            setProducts(response.data)
-        })
+        axios.get('http://127.0.0.1:8000/products/')
+            .then((response) => {
+                setProducts(response.data)
+            })
+            .catch((error) => {
+                console.error('Error fetching products:', error)
+            })
     }
 
     function addToCart(product) {
-        const existingProduct = cart.find((cartProduct) => cartProduct === product)
+        const existingProduct = cart.find((cartProduct) => cartProduct.id === product.id) // Compare by unique ID
         if (!existingProduct) {
-            setCart([...cart, product])
-            console.log('cart is', cart)
+            const updatedCart = [...cart, product]
+            setCart(updatedCart)
+            console.log('Updated cart:', updatedCart) // Log the updated cart state
+            navigate("/cart") // Redirect to the cart page
         }
     }
     return (
